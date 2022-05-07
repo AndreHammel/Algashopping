@@ -1,10 +1,10 @@
 import React from 'react';
+import App from '../components/App';
 
 function HomeView() {
   return (
     <div>
-      Olá 2
-      <span>Aqui</span>
+      <App />
     </div>
   )
 }
