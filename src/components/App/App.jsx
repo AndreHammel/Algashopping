@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppContainer from '../AppContainer'
 import AppHeader from '../AppHeader/AppHeader'
 import LineChart from '../../shared/LineChart'
@@ -7,13 +7,22 @@ import productsMock from '../../mocks/productsList.json'
 import { Wrapper, Container } from './App.styles'
 
 function App() {
-  const [ products, setProducts ] = useState(productsMock.products)
-
   const colors = [ '#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61' ]
+  const [ products, setProducts ] = useState(productsMock.products)
+  const [ selectedProducts, setSelectedProducts ] = useState([])
 
   function handleToggle(id, checked) {
-    console.log(id, checked)
+    const newProduct = products.map(product => product.id === id
+      ? ({ ...product, checked: !product.checked })
+      : product)
+    setProducts(newProduct)
   }
+
+  useEffect(() => {
+    const newSelectedProducts = products
+      .filter(product => product.checked)
+    setSelectedProducts(newSelectedProducts)
+  }, [ products ])
 
   return (
     <Wrapper>
@@ -30,7 +39,7 @@ function App() {
           middle={
             <ShoppingList
               title="Sua lista de compras"
-              products={ products }
+              products={ selectedProducts }
               onToggle={ handleToggle }
             /> }
           right={
